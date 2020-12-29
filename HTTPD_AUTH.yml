@@ -1,0 +1,42 @@
+- hosts: all
+  tasks:
+  - name: INSTALLING HTTPD
+    package: 
+     name: httpd
+     state: present
+    become: yes
+  - name: STARTING HTTPD SERVICES
+    service:
+     name: httpd
+     state: started
+     enabled: yes
+    become: yes
+  - package:
+     name: python-pip
+    become: yes
+  - name: INSTALLING PYTHON LIBRARY
+    pip:
+     name: passlib
+    become: yes
+  - name: COPYING CONTENT
+    copy:
+     dest: /var/www/html/
+     src: /var/www/html/index.html
+    become: yes
+  - name: CREATING AND ADDING USER TO HTPASSWD FILE
+    htpasswd:
+     path: /f1
+     name: test
+     password: redhat
+    become: yes
+  - name: SETTING HTTPD AUTH
+    replace: 
+     path: /etc/httpd/conf/httpd.conf
+     regexp: AllowOverride None
+     replace: AllowOverride AuthConfig
+    become: yes
+  - name: CREATING .HTACCESS FILE
+    copy:
+     dest: /var/www/html/.htaccess
+     src: /var/www/html/.htaccess
+    become: yes  

@@ -1,0 +1,16 @@
+- hosts: 127.0.0.1
+  vars_files:
+  - dd.yml
+  vars:
+    x: "HEllo"
+  vars_prompt:
+    - name: "name1"
+      prompt: "what is your name?"
+      private: no
+    - name: "quest"
+      prompt: "what is your quest?"
+    - name: "favcolor"
+      prompt: "what is your favorite color?"
+  tasks:
+  - debug:
+     msg: "{{x}} {{name1}} {{var1}}"

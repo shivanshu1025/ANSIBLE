@@ -1,0 +1,29 @@
+- hosts: all
+  tasks:
+  - copy:
+     src: /home/ec2-user/
+     dest: /
+    become: yes
+  - command: rpm -ivh /jdk-8u171-linux-x64.rpm
+    become: yes
+  - command: rpm -ivh /hadoop-1.2.1-1.x86_64.rpm --force
+    become: yes
+  - command: rm -r /etc/hadoop/hdfs-site.xml
+    become: yes
+  - command: rm -r /etc/hadoop/core-site.xml
+    become: yes
+  - copy:
+     src: /hadoop/hdfs-site.xml
+     dest: /etc/hadoop/
+    become: yes
+  - copy:
+     src: /hadoop/core-site.xml
+     dest: /etc/hadoop/
+    become: yes
+  - command: mkdir /nn
+    become: yes
+  - command: hadoop namenode -format
+    become: yes
+  - command: hadoop-daemon.sh start namenode
+    become: yes
+  

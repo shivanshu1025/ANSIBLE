@@ -1,0 +1,12 @@
+- hosts: localhost
+  tasks:
+  - name: Sending an e-mail using Gmail SMTP servers
+    mail:
+     host: smtp.gmail.com
+     port: 587
+     username: "shivanshu467@gmail.com"
+     password: "7559618456"
+     to: uic.18mca1025@gmail.com
+     subject: Ansible-report
+     body: testing ansible
+

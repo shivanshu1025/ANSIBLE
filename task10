@@ -1,0 +1,25 @@
+- hosts: all
+  tasks:
+  - name: installing docker
+    command: yum install docker -y
+    become: yes
+  - name: Starting docker services
+    service:
+      name: docker
+      state: started
+      enabled: yes
+    become: yes
+  - name: Pulling httpd image from docker hub
+    command: docker pull httpd
+    become: yes
+  - name: Allocating docker container and exposing port to public 
+    command: docker run -itd --name myos -p 80:80 httpd
+    become: yes
+  - name: Copy content to target node
+    copy:
+      src: /mywebsite
+      dest: /website_content
+    become: yes
+  - name: Copying content to the container image
+    command: docker cp /website_content myos:/usr/local/apache2/htdocs/
+    become: yes
